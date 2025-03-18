@@ -3,12 +3,10 @@ const passport = require('passport');
 const { signup, forgotPassword, resetPassword } = require('../controllers/authController');
 const router = express.Router();
 
-// POST Signup (No change needed)
-// router.post('/signup', signup);
-
 // POST Login using Passport Local Strategy
 router.post('/login', passport.authenticate('local', { session: false }), (req, res) => {
   const jwt = require('jsonwebtoken');
+  
   // JWT Token creation after successful authentication
   const token = jwt.sign(
     { userId: req.user.id, email: req.user.email },
@@ -25,10 +23,13 @@ router.post('/login', passport.authenticate('local', { session: false }), (req, 
   });
 });
 
+
 // POST Forgot Password
 router.post('/forgot-password', forgotPassword);
 
 // POST Reset Password
 router.post('/reset-password/:token', resetPassword);
+
+
 
 module.exports = router;
